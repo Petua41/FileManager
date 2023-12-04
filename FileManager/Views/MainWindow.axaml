@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:FileManager.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:FileManager.Views"
+        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+        xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="FileManager.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="FileManager" >
+
+  <i:Interaction.Behaviors >
+    <ia:EventTriggerBehavior EventName="Closing"
+                             SourceObject="ChangeProperty" >
+      <ia:InvokeCommandAction x:DataType="vm:MainWindowViewModel"
+                              Command="{Binding WindowClosed}" />
+    </ia:EventTriggerBehavior>
+  </i:Interaction.Behaviors>
+  
+  <views:MainView />
+  <!-- If we include everything directly into MainWindow,
+  application won`t run on some systems,
+  that don`t know what is window-->
+</Window>

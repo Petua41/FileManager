@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:FileManager.ViewModels"
+             xmlns:img="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+             xmlns:views="clr-namespace:FileManager.Views"
+             xmlns:eviews="clr-namespace:FileManager.Views.ExplorerViews"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FileManager.Views.ExplorerView">
+  
+  <DockPanel VerticalAlignment="Stretch" 
+             HorizontalAlignment="Stretch" >
+    <DockPanel DockPanel.Dock="Bottom"
+               HorizontalAlignment="Left" >
+      <Label Content="Show hidden:"
+             HorizontalAlignment="Left" />
+      <ToggleButton Classes="switch"
+                  x:DataType="vm:ExplorerViewModel"
+                  IsChecked="{Binding ShowHidden}" />
+    </DockPanel>
+    <Panel DockPanel.Dock="Top" >
+      <Button HorizontalAlignment="Left"
+              Content=".."
+              x:DataType="vm:ExplorerViewModel"
+              Command="{Binding UpClicked}" />
+      <Grid HorizontalAlignment="Right"
+            ColumnDefinitions="*,*"
+            x:DataType="vm:ExplorerViewModel">
+        <ToggleButton img:Attached.Icon="fa-list-ul"
+                      Grid.Column="0"
+                      IsChecked="{Binding TreeMode}" />
+        <ToggleButton img:Attached.Icon="fa-grip"
+                      Grid.Column="1"
+                      IsChecked="{Binding !TreeMode}" />
+      </Grid>
+    </Panel>
+    <Carousel x:DataType="vm:ExplorerViewModel"
+              SelectedIndex="{Binding CarouselSelectedIndex}">
+      <Carousel.Items >
+        <eviews:IconsExplorerView />
+        <eviews:TreeExplorerView />
+      </Carousel.Items>
+    </Carousel>
+  </DockPanel>
+</UserControl>

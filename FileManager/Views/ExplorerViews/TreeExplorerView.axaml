@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:evm="clr-namespace:FileManager.ViewModels.ExplorerViewModels"
+             xmlns:img="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+             xmlns:m="using:FileManager.Models"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FileManager.Views.ExplorerViews.TreeExplorerView">
+
+  <!--<TextBlock x:DataType="vm:TreeExplorerViewModel"
+             Text="{Binding MyAsyncText^, FallbackValue='Wait a second'}" />
+  -->
+  <Panel >
+    <img:Icon Classes="loading"
+              x:DataType="evm:TreeExplorerViewModel"
+              IsVisible="{Binding IsLoading}"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center" />
+    <TreeView x:DataType="evm:TreeExplorerViewModel"
+              ItemsSource="{Binding FileNodes^, FallbackValue=''}"
+              SelectedItem="{Binding SelectedItem}">
+    
+      <TreeView.ItemTemplate >
+        <TreeDataTemplate x:DataType="m:FileNode"
+                          ItemsSource="{Binding SubNodes}">
+          <DockPanel x:DataType="m:FileNode" >
+            <img:Icon x:DataType="m:FileNode"
+                      Value="{Binding File.Icon}"
+                      DockPanel.Dock="Left" />
+            <Label x:DataType="m:FileNode"
+                   Content="{Binding File.Filename}"
+                   DockPanel.Dock="Right" />
+          </DockPanel>
+        </TreeDataTemplate>
+      </TreeView.ItemTemplate>
+    
+    </TreeView>
+  </Panel>
+</UserControl>

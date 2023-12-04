@@ -1,0 +1,80 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:FileManager.ViewModels"
+             xmlns:m="using:FileManager.Models"
+             xmlns:views="clr-namespace:FileManager.Views"
+             xmlns:img="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FileManager.Views.MainView"
+             x:DataType="vm:MainViewModel" >
+  
+  <DockPanel >
+    <Menu DockPanel.Dock="Top">
+      <MenuItem Header="File" >
+        <MenuItem Header="Close"
+                  Command="{Binding CloseClicked}">
+          <MenuItem.Icon >
+            <img:Icon Value="fa-right-from-bracket" />
+          </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Recent" >
+          <ListBox x:DataType="vm:MainViewModel"
+                   ItemsSource="{Binding Recent}"
+                   SelectedIndex="{Binding SelectedRecentIndex}" >
+            <ListBox.ItemTemplate >
+              <DataTemplate x:DataType="m:RecentDirectoryRecord" >
+                <DockPanel >
+                  <img:Icon Value="fa-folder" />
+                  <Label Content="{Binding Name}" />
+                </DockPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <MenuItem.Icon >
+            <img:Icon Value="fa-clock" />
+          </MenuItem.Icon>
+        </MenuItem>
+      </MenuItem>
+    </Menu>
+    <Panel DockPanel.Dock="Bottom" >
+      <Grid HorizontalAlignment="Left"
+            ColumnDefinitions="*,*">
+        <Label Content="Last sync:"
+               HorizontalAlignment="Left"
+               Grid.Column="0"/>
+        <Label Content="{Binding LastSync, 
+                         TargetNullValue='Not synced'}"
+               x:DataType="vm:MainViewModel"
+               HorizontalAlignment="Right"
+               Grid.Column="1"/>
+      </Grid>
+      <img:Icon HorizontalAlignment="Right"
+                x:DataType="vm:MainViewModel"
+                Value="{Binding SyncIcon}"
+                Animation="{Binding SyncAnimation}" />
+    </Panel>
+    <TabControl VerticalAlignment="Stretch"
+                Margin="5">
+      <TabItem >
+        <TabItem.Header >
+          <Label Content="Explorer" />
+        </TabItem.Header>
+        <views:ExplorerView />
+      </TabItem>
+      <TabItem >
+        <TabItem.Header >
+          <Label Content="Statistics" />
+        </TabItem.Header>
+        <views:StatisticsView />
+      </TabItem>
+      <TabItem >
+        <TabItem.Header >
+          <Label Content="Edit" />
+        </TabItem.Header>
+        <views:EditView />
+      </TabItem>
+    </TabControl>
+  </DockPanel>
+</UserControl>

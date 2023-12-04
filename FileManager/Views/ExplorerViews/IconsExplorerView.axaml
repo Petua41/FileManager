@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:evm="using:FileManager.ViewModels.ExplorerViewModels"
+             xmlns:img="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+             xmlns:m="using:FileManager.Models"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FileManager.Views.ExplorerViews.IconsExplorerView">
+  
+  <Panel >
+    <ListBox x:DataType="evm:IconsExplorerViewModel"
+             x:Name="FilesListBox"
+             DockPanel.Dock="Top"
+             VerticalAlignment="Stretch"
+             ItemsSource="{Binding Files^, FallbackValue=''}"
+             Background="Transparent"
+             SelectedItem="{Binding SelectedItem, TargetNullValue=''}" >
+      <ListBox.ItemsPanel >
+        <ItemsPanelTemplate >
+          <WrapPanel ItemHeight="150"
+                      ItemWidth="150" >
+          </WrapPanel>
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+      <ListBox.ItemTemplate >
+        <DataTemplate DataType="m:FileRecord" >
+          <DockPanel >
+            <img:Icon x:DataType="m:FileRecord"
+                      DockPanel.Dock="Top"
+                      Value="{Binding Icon}"
+                      FontSize="64" />
+            <TextBlock x:DataType="m:FileRecord"
+                    Text="{Binding Filename}"
+                    DockPanel.Dock="Bottom"
+                    HorizontalAlignment="Center"
+                    MaxLines="3"
+                    TextWrapping="Wrap" />
+          </DockPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <img:Icon Classes="loading"
+              x:DataType="evm:IconsExplorerViewModel"
+              IsVisible="{Binding IsLoading}" />
+  </Panel>
+</UserControl>

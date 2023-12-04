@@ -1,0 +1,76 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <ToggleButton Classes="switch" />
+        </Border>
+    </Design.PreviewWith>
+
+  <Style Selector="ToggleButton.switch" >
+    <Setter Property="Template" >
+      <Setter.Value >
+        <ControlTemplate >
+          <Panel >
+            <Rectangle RadiusX="10"
+                       RadiusY="10"
+                       Width="40"
+                       Height="20"
+                       Fill="Red" />
+            <Rectangle RadiusX="10"
+                       RadiusY="10"
+                       Width="40"
+                       Height="20"
+                       Fill="Green"
+                       IsVisible="{TemplateBinding IsChecked}"/>
+            <Canvas HorizontalAlignment="Stretch" >
+              <Ellipse Classes="switchMarker"
+                       Fill="White"
+                       Stroke="Black"
+                       StrokeThickness="1"
+                       Height="20"
+                       Width="20"
+                       Canvas.Left="0" >
+              </Ellipse>
+            </Canvas>
+
+          </Panel>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style Selector="ToggleButton:checked Canvas Ellipse.switchMarker" >
+    <Style.Animations >
+      <Animation Duration="0:0:0.2"
+                 FillMode="Both"
+                 IterationCount="1" >
+        <KeyFrame Cue="0%" >
+          <Setter Property="Canvas.Left"
+                  Value="0" />
+        </KeyFrame>
+        <KeyFrame Cue="100%" >
+          <Setter Property="Canvas.Left"
+                  Value="20" />
+        </KeyFrame>
+      </Animation>
+    </Style.Animations>
+  </Style>
+
+  <Style Selector="ToggleButton:unchecked Canvas Ellipse.switchMarker" >
+    <Style.Animations >
+      <Animation Duration="0:0:0.2"
+                 FillMode="Both"
+                 IterationCount="1"
+                 PlaybackDirection="Reverse" >
+        <KeyFrame Cue="0%" >
+          <Setter Property="Canvas.Left"
+                  Value="0" />
+        </KeyFrame>
+        <KeyFrame Cue="100%" >
+          <Setter Property="Canvas.Left"
+                  Value="20" />
+        </KeyFrame>
+      </Animation>
+    </Style.Animations>
+  </Style>
+</Styles>

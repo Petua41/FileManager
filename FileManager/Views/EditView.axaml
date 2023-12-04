@@ -1,0 +1,68 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:img="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:idd="clr-namespace:Avalonia.Xaml.Interactions.DragAndDrop;assembly=Avalonia.Xaml.Interactions.DragAndDrop"
+             xmlns:beh="using:FileManager.Behaviors"
+             xmlns:m="using:FileManager.Models"
+             xmlns:vm="clr-namespace:FileManager.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FileManager.Views.EditView">
+  <Grid ColumnDefinitions="*,10,*" >
+    <ListBox x:DataType="vm:EditViewModel"
+             ItemsSource="{Binding Files^, FallbackValue=''}"
+             Background="Transparent"
+             Grid.Column="0"
+             SelectionMode="Multiple"
+             SelectedItems="{Binding SelectedItems}"
+             DragDrop.AllowDrop="True" >
+      <ListBox.ItemTemplate >
+        <DataTemplate DataType="m:FileRecord" >
+          <DockPanel >
+            <img:Icon Value="{Binding Icon}"
+                      FontSize="16"
+                      DockPanel.Dock="Left" />
+            <Label Content="{Binding Filename}"
+                   DockPanel.Dock="Right" />
+          </DockPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+      <ListBox.Resources>
+        <beh:FileListDropHandler x:Key="FileListDropHandler" />
+      </ListBox.Resources>
+      <i:Interaction.Behaviors>
+        <idd:ContextDropBehavior Handler="{StaticResource FileListDropHandler}" />
+      </i:Interaction.Behaviors>
+    </ListBox>
+    <img:Icon Classes="loading"
+              x:DataType="vm:EditViewModel"
+              IsVisible="{Binding IsLoading}" />
+    <GridSplitter Grid.Column="1"
+                  ResizeDirection="Columns" />
+    <StackPanel Grid.Column="2" >
+      <TextBox x:DataType="vm:EditViewModel"
+               Watermark="New filename"
+               Text="{Binding InputFilename}"/>
+      <ComboBox x:DataType="vm:EditViewModel"
+                SelectedIndex="{Binding SelcetedHiddenIndex}" >
+        <ComboBoxItem >
+          <DockPanel >
+            <img:Icon Value="fa-eye" />
+            <Label Content="Visible" />
+          </DockPanel>
+        </ComboBoxItem>
+        <ComboBoxItem >
+          <DockPanel >
+            <img:Icon Value="fa-eye-slash" />
+            <Label Content="Hidden" />
+          </DockPanel>
+        </ComboBoxItem>
+      </ComboBox>
+      <Button Content="Apply"
+              x:DataType="vm:EditViewModel"
+              Command="{Binding ApplyClicked}" />
+    </StackPanel>
+  </Grid>
+</UserControl>
