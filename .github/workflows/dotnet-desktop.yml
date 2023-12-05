@@ -175,7 +175,7 @@ jobs:
 
     # build
     - name: Build
-      run: dotnet build --project ${{ env.Build_Project_Path }}
+      run: dotnet build ${{ env.Build_Project_Path }}
 
     # Remove the pfx
     #- name: Remove the pfx
