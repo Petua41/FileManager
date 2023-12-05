@@ -56,14 +56,14 @@ namespace FileManager.ViewModels
             {
                 FileRecord file = SelectedItems[0];
                 if (file.Filename != newFilename) FileRenameHandler.Rename([file.Filename], newFilename);
-                HiddenAttributeChanger.ChangeAttribute([file.Filename], shouldBeHidden);
+                HiddenAttributeChanger.ChangeAttribute([newFilename], shouldBeHidden);      // we rename file and THEN change attribute, so we need to cahnge attribute on new filename
             }
             else
             {
                 string[] filenames = SelectedItems.Select(rec => rec.Filename).ToArray();
 
-                FileRenameHandler.Rename(filenames, newFilename);
-                HiddenAttributeChanger.ChangeAttribute(filenames, shouldBeHidden);
+                string[] newFilenames = FileRenameHandler.Rename(filenames, newFilename);
+                HiddenAttributeChanger.ChangeAttribute(newFilenames, shouldBeHidden);
             }
         }
 

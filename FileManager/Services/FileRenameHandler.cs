@@ -1,19 +1,29 @@
 ﻿using FileManager.Infrastructure.Commands;
+using System.Collections.Generic;
 using System.IO;
 
 namespace FileManager.Services
 {
     public static class FileRenameHandler
     {
-        public static void Rename(string[] oldFilenames, string newFilename)
+        /// <returns>New filenames</returns>
+        public static string[] Rename(string[] oldFilenames, string newFilename)
         {
-            if (oldFilenames.Length == 1) Rename(oldFilenames[0], newFilename);
+            if (oldFilenames.Length == 1)
+            {
+                Rename(oldFilenames[0], newFilename);
+                return [newFilename];
+            }
             else
             {
+                List<string> newFilenames = [];
                 for (int i = 0; i < oldFilenames.Length; i++)
                 {
-                    Rename(oldFilenames[i], AddNumberToFilename(newFilename, i));
+                    string filenameWithNumber = AddNumberToFilename(newFilename, i);
+                    Rename(oldFilenames[i], filenameWithNumber);
+                    newFilenames.Add(filenameWithNumber);
                 }
+                return [.. newFilenames];
             }
         }
 
