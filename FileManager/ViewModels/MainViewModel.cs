@@ -25,7 +25,7 @@ public class MainViewModel : ViewModelBase
         { SyncState.Syncing, "Spin" }, { SyncState.Synced, "None" }, { SyncState.NotSynced, "None" }
     };
 
-    private SyncState currentState = DriveSyncHandler.State;
+    private SyncState currentState = DriveSyncHandler.Instance.State;
     private readonly SyncTimer timer;
 
     public MainViewModel()
@@ -33,7 +33,7 @@ public class MainViewModel : ViewModelBase
         timer = new();
         timer.Initialize();
 
-        DriveSyncHandler.StateChanged += (sender, e) => CurrentState = DriveSyncHandler.State;
+        DriveSyncHandler.Instance.StateChanged += (sender, e) => CurrentState = DriveSyncHandler.Instance.State;
         timer.LastSyncChanged += (sender, e) => this.RaisePropertyChanged(nameof(LastSync));
         CurrentDirectory.CurrentDirectorySwitched += OnCurrentDirectorySwitched;
 

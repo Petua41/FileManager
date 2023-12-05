@@ -40,5 +40,29 @@ namespace FileManager.Services.FileListers.TreeFileListers
 
             return result;
         }
+
+        /*private Node<FileSystemInfo> CreateNodeGCD(FileSystemInfo fsInfo)
+        {
+            if (fsInfo is FileInfo fInfo) return new(fsInfo);
+
+            Stack<FileSystemInfo> stack = [];
+            stack.Push(fsInfo);
+
+            while (stack.Count > 0)
+            {
+                FileSystemInfo fs = stack.Pop();
+                // Visit(fs)
+
+
+
+                if (fs is DirectoryInfo dInfo)
+                {
+                    foreach (FileSystemInfo fileSystem in dInfo.EnumerateFileSystemInfos().Reverse())
+                    {
+                        stack.Push(fileSystem);
+                    }
+                }
+            }
+        }*/
     }
 }

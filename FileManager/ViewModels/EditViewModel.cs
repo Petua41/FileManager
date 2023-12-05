@@ -39,7 +39,7 @@ namespace FileManager.ViewModels
             }
             catch { return false; }     // if any exception occurs, we cannot paste file
 
-            DriveSyncHandler.RegisterCommand(new AddFileCommand(path, CurrentDirectory.Name));
+            DriveSyncHandler.Instance.RegisterCommand(new AddFileCommand(path, CurrentDirectory.Name));
             FilesCollectionConverter.AddFile(path);
 
             return true;

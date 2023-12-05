@@ -26,7 +26,7 @@ namespace FileManager.Infrastructure
 
         private async void OnTimerTick(object? sender, EventArgs e)
         {
-            bool wasSynced = await DriveSyncHandler.Sync();
+            bool wasSynced = await DriveSyncHandler.Instance.Sync();
             if (wasSynced) LastSync = DateTime.Now;
             LastSyncChanged?.Invoke(null, new());
         }

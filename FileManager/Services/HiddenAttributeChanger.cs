@@ -27,7 +27,7 @@ namespace FileManager.Services
 
             if (fsInfo.IsHidden() != shouldBeHidden)
             {
-                DriveSyncHandler.RegisterCommand(new ChangeHiddenAttributeCommand(filename, shouldBeHidden));
+                DriveSyncHandler.Instance.RegisterCommand(new ChangeHiddenAttributeCommand(filename, shouldBeHidden));
             }
         }
     }

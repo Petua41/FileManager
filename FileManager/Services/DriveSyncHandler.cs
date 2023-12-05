@@ -1,6 +1,5 @@
 ﻿using FileManager.Infrastructure.Commands;
 using FileManager.Infrastructure.Events;
-using FileManager.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,11 +10,29 @@ namespace FileManager.Services
 {
     public enum SyncState { NotSynced, Syncing, Synced }
 
-    public static class DriveSyncHandler
+    public class DriveSyncHandler
     {
         private static readonly List<ICommand> pendingChanges = [];
 
-        public static void RegisterCommand(ICommand command)
+        private static DriveSyncHandler? instance;
+        private static readonly object syncLock = new();
+
+        private DriveSyncHandler() { }
+
+        public static DriveSyncHandler Instance
+        {
+            get
+            {
+                lock (syncLock)
+                {
+                    instance ??= new();
+                }
+
+                return instance;
+            }
+        }
+
+        public void RegisterCommand(ICommand command)
         {
             pendingChanges.Add(command);
 
@@ -26,7 +43,7 @@ namespace FileManager.Services
             }
         }
 
-        public static async Task<bool> Sync()
+        public async Task<bool> Sync()
         {
             bool synced = false;
 
@@ -51,7 +68,7 @@ namespace FileManager.Services
             return synced;
         }
 
-        private static void RaiseStateChangedEvent()   // I don`t know if I should do this
+        private void RaiseStateChangedEvent()   // I don`t know if I should do this
         {
             // Make a temporary copy of the event to avoid possibility of
             // a race condition if the last subscriber unsubscribes
@@ -61,7 +78,7 @@ namespace FileManager.Services
             if (eventCopy is not null) eventCopy(null, new(State));      // we cannot use "this" as sender. This class is static
         }
 
-        private static void WriteToDiskAndWait()
+        private void WriteToDiskAndWait()
         {
             Stopwatch sw = Stopwatch.StartNew();
 
@@ -72,7 +89,7 @@ namespace FileManager.Services
             if (sw.ElapsedMilliseconds < 1000) Thread.Sleep(1500 - (int)sw.ElapsedMilliseconds);    // If syncing is too fast, artifitially slow it
         }
 
-        private static void WriteToDisk()
+        private void WriteToDisk()
         {
             foreach (ICommand command in pendingChanges)
             {
@@ -82,10 +99,10 @@ namespace FileManager.Services
             pendingChanges.Clear();
         }
 
-        public static SyncState State { get; private set; } = SyncState.Synced;
+        public SyncState State { get; private set; } = SyncState.Synced;
 
-        private static bool NeedsSync => State != SyncState.Syncing && pendingChanges.Count > 0;
+        private bool NeedsSync => State != SyncState.Syncing && pendingChanges.Count > 0;
 
-        public static event EventHandler<SyncStateChangeEventArgs>? StateChanged;
+        public event EventHandler<SyncStateChangeEventArgs>? StateChanged;
     }
 }

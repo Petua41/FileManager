@@ -3,7 +3,7 @@ using System.IO;
 
 namespace FileManager.Services
 {
-    public class FileRenameHandler
+    public static class FileRenameHandler
     {
         public static void Rename(string[] oldFilenames, string newFilename)
         {
@@ -22,7 +22,7 @@ namespace FileManager.Services
             if (!Path.IsPathFullyQualified(oldFilename)) oldFilename = Path.Combine(CurrentDirectory.Name, oldFilename);
             if (!Path.IsPathFullyQualified(newFilename)) newFilename = Path.Combine(CurrentDirectory.Name, newFilename);
 
-            if (File.Exists(oldFilename)) DriveSyncHandler.RegisterCommand(new RenameFileCommand(oldFilename, newFilename));
+            if (File.Exists(oldFilename)) DriveSyncHandler.Instance.RegisterCommand(new RenameFileCommand(oldFilename, newFilename));
         }
 
         private static string AddNumberToFilename(string filename, int number)

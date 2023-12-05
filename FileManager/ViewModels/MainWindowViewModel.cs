@@ -13,7 +13,7 @@ namespace FileManager.ViewModels
 
         private async void OnWindowClosed()
         {
-            if (DriveSyncHandler.State == SyncState.NotSynced) await DriveSyncHandler.Sync();   // because of await, we don`t nned to wait additionally
+            if (DriveSyncHandler.Instance.State == SyncState.NotSynced) await DriveSyncHandler.Instance.Sync();   // because of await, we don`t need to wait additionally
         }
 
         public ReactiveCommand<Unit, Unit> WindowClosed { get; }

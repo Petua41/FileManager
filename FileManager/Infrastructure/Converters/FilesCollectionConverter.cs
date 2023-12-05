@@ -27,7 +27,7 @@ namespace FileManager.Infrastructure.Converters
 
         static FilesCollectionConverter()
         {
-            DriveSyncHandler.StateChanged += OnStateChanged;
+            DriveSyncHandler.Instance.StateChanged += OnStateChanged;
         }
 
         private static void OnStateChanged(object? sender, Events.SyncStateChangeEventArgs e)
