@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tlo6pdJ+nl6SvYX5msoIv1+b+ARqFKhV9pZ5iF6+dPmJDXlx/xsN1SDiW3HDup3VhghEok0ppFkqub2EhKhMOQ==",
+  "dgSpecHash": "NPZ4jvfNpNwnEGlG5SasnUGUwlZbdzpW4dsVfqd0H3AWCHvVI/+EOlSVHX+fZ2f7Q6yTlEV+e+9Lykd5SzPhuw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Petua\\Source\\Repos\\FileManager\\FileManager\\FileManager.csproj",
+  "projectFilePath": "C:\\Users\\Petua\\source\\repos\\FileManager\\FileManager\\FileManager.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Petua\\.nuget\\packages\\avalonia\\11.0.2\\avalonia.11.0.2.nupkg.sha512",
     "C:\\Users\\Petua\\.nuget\\packages\\avalonia.buildservices\\0.0.28\\avalonia.buildservices.0.0.28.nupkg.sha512",

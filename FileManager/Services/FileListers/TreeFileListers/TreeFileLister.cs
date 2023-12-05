@@ -15,29 +15,30 @@ namespace FileManager.Services.FileListers.TreeFileListers
         {
             if (savedPredicate is null && predicate is not null) savedPredicate = predicate;
 
-            List<Node<FileSystemInfo>> result = [];
-            foreach (FileSystemInfo fsInfo in directory.EnumerateFileSystemInfos())
+            Node<FileSystemInfo> root = CreateNodeRecursive(directory);
+
+            return [.. root.SubNodes];      // this expression is equivalent of new List<Node<FileSystemInfo>>(root.SubNodes);
+        }
+
+        private Node<FileSystemInfo> CreateNodeRecursive(FileSystemInfo fsInfo)
+        {
+            Node<FileSystemInfo> result = new(fsInfo);
+
+            if (fsInfo is DirectoryInfo dInfo)
             {
-                if (savedPredicate is null || savedPredicate(fsInfo)) 
+                foreach (FileSystemInfo fs in dInfo.EnumerateFileSystemInfos())
                 {
-                    result.Add(CreateNode(fsInfo));
+                    if (savedPredicate is not null && !savedPredicate(fs)) continue;
+
+                    try
+                    {
+                        result.SubNodes.Add(CreateNodeRecursive(fs));
+                    }
+                    catch (Exception e) when (e is UnauthorizedAccessException or IOException) { result.SubNodes.Add(new(fs)); }
                 }
             }
 
             return result;
-        }
-
-        private Node<FileSystemInfo> CreateNode(FileSystemInfo fsInfo)
-        {
-            if (fsInfo is DirectoryInfo dirInfo)
-            {
-                try
-                {
-                    return new(dirInfo, GetAllFileNodes(dirInfo));
-                }
-                catch (Exception e) when (e is UnauthorizedAccessException or IOException) { /* return */ }
-            }
-            return new(fsInfo);
         }
     }
 }

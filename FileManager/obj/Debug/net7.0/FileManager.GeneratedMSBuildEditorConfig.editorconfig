@@ -13,36 +13,36 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = FileManager
-build_property.ProjectDir = C:\Users\Petua\Source\Repos\FileManager\FileManager\
+build_property.ProjectDir = C:\Users\Petua\source\repos\FileManager\FileManager\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 
-[C:/Users/Petua/Source/Repos/FileManager/FileManager/App.axaml]
+[C:/Users/Petua/source/repos/FileManager/FileManager/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Petua/Source/Repos/FileManager/FileManager/RecourceDictionaries/Styles/LoadingIcon.axaml]
+[C:/Users/Petua/source/repos/FileManager/FileManager/RecourceDictionaries/Styles/LoadingIcon.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Petua/Source/Repos/FileManager/FileManager/RecourceDictionaries/Styles/Switch.axaml]
+[C:/Users/Petua/source/repos/FileManager/FileManager/RecourceDictionaries/Styles/Switch.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Petua/Source/Repos/FileManager/FileManager/Views/EditView.axaml]
+[C:/Users/Petua/source/repos/FileManager/FileManager/Views/EditView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Petua/Source/Repos/FileManager/FileManager/Views/ExplorerView.axaml]
+[C:/Users/Petua/source/repos/FileManager/FileManager/Views/ExplorerView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Petua/Source/Repos/FileManager/FileManager/Views/ExplorerViews/IconsExplorerView.axaml]
+[C:/Users/Petua/source/repos/FileManager/FileManager/Views/ExplorerViews/IconsExplorerView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Petua/Source/Repos/FileManager/FileManager/Views/ExplorerViews/TreeExplorerView.axaml]
+[C:/Users/Petua/source/repos/FileManager/FileManager/Views/ExplorerViews/TreeExplorerView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Petua/Source/Repos/FileManager/FileManager/Views/MainView.axaml]
+[C:/Users/Petua/source/repos/FileManager/FileManager/Views/MainView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Petua/Source/Repos/FileManager/FileManager/Views/MainWindow.axaml]
+[C:/Users/Petua/source/repos/FileManager/FileManager/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Petua/Source/Repos/FileManager/FileManager/Views/StatisticsView.axaml]
+[C:/Users/Petua/source/repos/FileManager/FileManager/Views/StatisticsView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

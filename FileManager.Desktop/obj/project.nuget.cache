@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1X/opiUgCNx7ax+tHhMR9M/rpIHY5iI/1Qqpb0xzYivQGMgaBG1GFZ8wcyUDmfGY6VP3lkmJiG5P7UegVQKvLQ==",
+  "dgSpecHash": "C9i2tbtm5uKKXWSBG073G2RRpqo/324S4/mz3BD8JZJVBMhOiiD64lJdU2S6CMo9neBU6utrGONrsVVZyAXkBw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Petua\\Source\\Repos\\FileManager\\FileManager.Desktop\\FileManager.Desktop.csproj",
+  "projectFilePath": "C:\\Users\\Petua\\source\\repos\\FileManager\\FileManager.Desktop\\FileManager.Desktop.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Petua\\.nuget\\packages\\avalonia\\11.0.2\\avalonia.11.0.2.nupkg.sha512",
     "C:\\Users\\Petua\\.nuget\\packages\\avalonia.angle.windows.natives\\2.1.0.2023020321\\avalonia.angle.windows.natives.2.1.0.2023020321.nupkg.sha512",

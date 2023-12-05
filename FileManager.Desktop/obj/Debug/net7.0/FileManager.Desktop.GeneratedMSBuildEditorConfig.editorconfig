@@ -13,6 +13,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = FileManager.Desktop
-build_property.ProjectDir = C:\Users\Petua\Source\Repos\FileManager\FileManager.Desktop\
+build_property.ProjectDir = C:\Users\Petua\source\repos\FileManager\FileManager.Desktop\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Petua\\Source\\Repos\\FileManager\\FileManager\\FileManager.csproj": {}
+    "C:\\Users\\Petua\\source\\repos\\FileManager\\FileManager\\FileManager.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Petua\\Source\\Repos\\FileManager\\FileManager\\FileManager.csproj": {
+    "C:\\Users\\Petua\\source\\repos\\FileManager\\FileManager\\FileManager.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Petua\\Source\\Repos\\FileManager\\FileManager\\FileManager.csproj",
+        "projectUniqueName": "C:\\Users\\Petua\\source\\repos\\FileManager\\FileManager\\FileManager.csproj",
         "projectName": "FileManager",
-        "projectPath": "C:\\Users\\Petua\\Source\\Repos\\FileManager\\FileManager\\FileManager.csproj",
+        "projectPath": "C:\\Users\\Petua\\source\\repos\\FileManager\\FileManager\\FileManager.csproj",
         "packagesPath": "C:\\Users\\Petua\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Petua\\Source\\Repos\\FileManager\\FileManager\\obj\\",
+        "outputPath": "C:\\Users\\Petua\\source\\repos\\FileManager\\FileManager\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
