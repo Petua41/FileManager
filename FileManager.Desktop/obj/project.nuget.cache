@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Aj/4veJEXEEhRmapnWzlHq/tyw44wawFikOYt2XurGGR7w/NGHCpQhCVBbM6O4rz3SZuvpgNdrd8Rx2hzAcQyw==",
+  "dgSpecHash": "VD15QyAsw6Wlycl2QwNw47L7oBKed04gcJ2SFtcS/ncrPnU+fwJDRVSktmluSFf+uI+uRAjVkZf2wcnwN2z77w==",
   "success": true,
   "projectFilePath": "C:\\Users\\Petua\\source\\repos\\FileManager\\FileManager.Desktop\\FileManager.Desktop.csproj",
   "expectedPackageFiles": [
@@ -26,7 +26,7 @@
     "C:\\Users\\Petua\\.nuget\\packages\\avalonia.xaml.interactivity\\11.0.2\\avalonia.xaml.interactivity.11.0.2.nupkg.sha512",
     "C:\\Users\\Petua\\.nuget\\packages\\colortextblock.avalonia\\11.0.0-d1\\colortextblock.avalonia.11.0.0-d1.nupkg.sha512",
     "C:\\Users\\Petua\\.nuget\\packages\\dialoghost.avalonia\\0.7.6\\dialoghost.avalonia.0.7.6.nupkg.sha512",
-    "C:\\Users\\Petua\\.nuget\\packages\\dynamicdata\\7.9.5\\dynamicdata.7.9.5.nupkg.sha512",
+    "C:\\Users\\Petua\\.nuget\\packages\\dynamicdata\\8.1.1\\dynamicdata.8.1.1.nupkg.sha512",
     "C:\\Users\\Petua\\.nuget\\packages\\fontawesome\\4.7.0\\fontawesome.4.7.0.nupkg.sha512",
     "C:\\Users\\Petua\\.nuget\\packages\\harfbuzzsharp\\2.8.2.3\\harfbuzzsharp.2.8.2.3.nupkg.sha512",
     "C:\\Users\\Petua\\.nuget\\packages\\harfbuzzsharp.nativeassets.linux\\2.8.2.3\\harfbuzzsharp.nativeassets.linux.2.8.2.3.nupkg.sha512",

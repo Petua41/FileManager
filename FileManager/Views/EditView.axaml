@@ -11,31 +11,37 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FileManager.Views.EditView">
   <Grid ColumnDefinitions="*,10,*" >
-    <ListBox x:DataType="vm:EditViewModel"
+    <DockPanel Grid.Column="0" >
+      <TextBox DockPanel.Dock="Top"
+               x:DataType="vm:EditViewModel"
+               Text="{Binding SearchText}"
+               Watermark="Search..." />
+      <ListBox x:DataType="vm:EditViewModel"
              ItemsSource="{Binding Files^, FallbackValue=''}"
              Background="Transparent"
-             Grid.Column="0"
+             DockPanel.Dock="Bottom"
              SelectionMode="Multiple"
              SelectedItems="{Binding SelectedItems}"
              DragDrop.AllowDrop="True" >
-      <ListBox.ItemTemplate >
-        <DataTemplate DataType="m:FileRecord" >
-          <DockPanel >
-            <img:Icon Value="{Binding Icon}"
-                      FontSize="16"
-                      DockPanel.Dock="Left" />
-            <Label Content="{Binding Filename}"
-                   DockPanel.Dock="Right" />
-          </DockPanel>
-        </DataTemplate>
-      </ListBox.ItemTemplate>
-      <ListBox.Resources>
-        <beh:FileListDropHandler x:Key="FileListDropHandler" />
-      </ListBox.Resources>
-      <i:Interaction.Behaviors>
-        <idd:ContextDropBehavior Handler="{StaticResource FileListDropHandler}" />
-      </i:Interaction.Behaviors>
-    </ListBox>
+        <ListBox.ItemTemplate >
+          <DataTemplate DataType="m:FileRecord" >
+            <DockPanel >
+              <img:Icon Value="{Binding Icon}"
+                        FontSize="16"
+                        DockPanel.Dock="Left" />
+              <Label Content="{Binding Filename}"
+                     DockPanel.Dock="Right" />
+            </DockPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+        <ListBox.Resources>
+          <beh:FileListDropHandler x:Key="FileListDropHandler" />
+        </ListBox.Resources>
+        <i:Interaction.Behaviors>
+          <idd:ContextDropBehavior Handler="{StaticResource FileListDropHandler}" />
+        </i:Interaction.Behaviors>
+      </ListBox>
+    </DockPanel>
     <img:Icon Classes="loading"
               x:DataType="vm:EditViewModel"
               IsVisible="{Binding IsLoading}" />

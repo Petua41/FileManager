@@ -298,18 +298,18 @@
           }
         }
       },
-      "DynamicData/7.9.5": {
+      "DynamicData/8.1.1": {
         "type": "package",
         "dependencies": {
-          "System.Reactive": "5.0.0"
+          "System.Reactive": "6.0.0"
         },
         "compile": {
-          "lib/net6.0/DynamicData.dll": {
+          "lib/net7.0/DynamicData.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/DynamicData.dll": {
+          "lib/net7.0/DynamicData.dll": {
             "related": ".xml"
           }
         }
@@ -1643,25 +1643,25 @@
         "lib/netstandard2.0/DialogHost.Avalonia.xml"
       ]
     },
-    "DynamicData/7.9.5": {
-      "sha512": "xFwVha7o3qUtVYxco5p+7Urcztc/m1gmaEUxOG0i7LNe+vfCfyb0ECAsT2FLm3zOPHb0g8s9qVu5LfPKfRNVng==",
+    "DynamicData/8.1.1": {
+      "sha512": "NYTTP6lJudweNrIQgIM67/KzFJIp20NK+GVInqrvxdCB9JMHsihqOYplyDGuOCZbMeZXVskj8bpXZfspsdm45w==",
       "type": "package",
-      "path": "dynamicdata/7.9.5",
+      "path": "dynamicdata/8.1.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE/LICENSE",
-        "dynamicdata.7.9.5.nupkg.sha512",
+        "README.md",
+        "dynamicdata.8.1.1.nupkg.sha512",
         "dynamicdata.nuspec",
         "lib/net462/DynamicData.dll",
         "lib/net462/DynamicData.xml",
         "lib/net6.0/DynamicData.dll",
         "lib/net6.0/DynamicData.xml",
+        "lib/net7.0/DynamicData.dll",
+        "lib/net7.0/DynamicData.xml",
         "lib/netstandard2.0/DynamicData.dll",
         "lib/netstandard2.0/DynamicData.xml",
-        "lib/uap10.0.16299/DynamicData.dll",
-        "lib/uap10.0.16299/DynamicData.pri",
-        "lib/uap10.0.16299/DynamicData.xml",
         "logo.png"
       ]
     },
@@ -4133,6 +4133,7 @@
       "Avalonia.Xaml.Interactions >= 11.0.2",
       "Avalonia.Xaml.Interactions.DragAndDrop >= 11.0.2",
       "Avalonia.Xaml.Interactivity >= 11.0.2",
+      "DynamicData >= 8.1.1",
       "FontAwesome >= 4.7.0",
       "MessageBox.Avalonia >= 3.1.3",
       "Projektanker.Icons.Avalonia >= 8.3.0",
@@ -4147,11 +4148,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Petua\\Source\\Repos\\FileManager\\FileManager\\FileManager.csproj",
+      "projectUniqueName": "C:\\Users\\Petua\\source\\repos\\FileManager\\FileManager\\FileManager.csproj",
       "projectName": "FileManager",
-      "projectPath": "C:\\Users\\Petua\\Source\\Repos\\FileManager\\FileManager\\FileManager.csproj",
+      "projectPath": "C:\\Users\\Petua\\source\\repos\\FileManager\\FileManager\\FileManager.csproj",
       "packagesPath": "C:\\Users\\Petua\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Petua\\Source\\Repos\\FileManager\\FileManager\\obj\\",
+      "outputPath": "C:\\Users\\Petua\\source\\repos\\FileManager\\FileManager\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4215,6 +4216,10 @@
           "Avalonia.Xaml.Interactivity": {
             "target": "Package",
             "version": "[11.0.2, )"
+          },
+          "DynamicData": {
+            "target": "Package",
+            "version": "[8.1.1, )"
           },
           "FontAwesome": {
             "target": "Package",

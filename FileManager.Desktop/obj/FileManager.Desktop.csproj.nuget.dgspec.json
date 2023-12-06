@@ -145,6 +145,10 @@
               "target": "Package",
               "version": "[11.0.2, )"
             },
+            "DynamicData": {
+              "target": "Package",
+              "version": "[8.1.1, )"
+            },
             "FontAwesome": {
               "target": "Package",
               "version": "[4.7.0, )"

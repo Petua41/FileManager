@@ -1,4 +1,6 @@
-﻿using FileManager.Infrastructure.Commands;
+﻿using DynamicData;
+using DynamicData.Binding;
+using FileManager.Infrastructure.Commands;
 using FileManager.Infrastructure.Converters;
 using FileManager.Models;
 using FileManager.Services;
@@ -9,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Runtime.Versioning;
 using System.Security.AccessControl;
 using System.Security.Principal;
@@ -21,6 +24,7 @@ namespace FileManager.ViewModels
         bool shouldBeHidden = false;
         int selectedHiddenIndex = 0;
         private bool isLoading;
+        private string searchText = string.Empty;
 
         public EditViewModel()
         {
@@ -30,6 +34,8 @@ namespace FileManager.ViewModels
             FilesCollectionConverter.TempFileAdded += (sender, e) => this.RaisePropertyChanged(nameof(Files));
             ExplorerViewModel.HiddenChanged += (sender, e) => this.RaisePropertyChanged(nameof(Files));
         }
+
+        #region Drag and drop
 
         public static bool AcceptDragAndDrop(string path)
         {
@@ -87,6 +93,8 @@ namespace FileManager.ViewModels
             catch { return false; }     // if any exception occurs, we cannot paste file
         }
 
+        #endregion
+
         private void OnApplyClicked()
         {
             string newFilename = InputFilename.Trim();
@@ -115,8 +123,26 @@ namespace FileManager.ViewModels
 
             SortedSet<FileRecord> files = await Task.Run(() => FilesCollectionConverter.GetFiles(ExplorerViewModel.ShouldShowHidden));
 
-            IsLoading = false;
-            return new(files);
+            if (SearchText.Length > 0)  // DynamicData is pretty slow
+            {
+                SourceList<FileRecord> list = new();
+                list.AddRange(files);
+
+                IObservableList<FileRecord> result = files
+                    .ToObservable()
+                    .ToObservableChangeSet()
+                    .Filter(rec => rec.Filename.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                    .AsObservableList();
+
+                IsLoading = false;
+
+                return new(result.Items);
+            }
+            else
+            {
+                IsLoading = false;
+                return [.. files];
+            }
         }
 
         public Task<ObservableCollection<FileRecord>> Files => GetFiles();
@@ -142,5 +168,15 @@ namespace FileManager.ViewModels
         public List<FileRecord> SelectedItems { get; set; } = [];
 
         public ReactiveCommand<Unit, Unit> ApplyClicked { get; }
+
+        public string SearchText
+        {
+            get => searchText;
+            set
+            {
+                searchText = value;
+                this.RaisePropertyChanged(nameof(Files));
+            }
+        }
     }
 }
