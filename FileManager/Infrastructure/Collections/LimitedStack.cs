@@ -8,8 +8,14 @@ namespace FileManager.Infrastructure.Collections
     /// </summary>
     public class LimitedStack<T>
     {
+        #region Fields
+
         private readonly List<T> list;
         private readonly int capacity;
+
+        #endregion
+
+        #region Constructors
 
         public LimitedStack(int capacity)
         {
@@ -22,6 +28,10 @@ namespace FileManager.Infrastructure.Collections
             list = old.list;
             this.capacity = capacity;
         }
+
+        #endregion
+
+        #region Public methods
 
         /// <summary>
         /// Add <paramref name="item"/> to the top of <see cref="LimitedStack{T}"/>
@@ -61,6 +71,8 @@ namespace FileManager.Infrastructure.Collections
         {
             return list[^1];
         }
+
+        #endregion
 
         private T PopBottom()
         {
