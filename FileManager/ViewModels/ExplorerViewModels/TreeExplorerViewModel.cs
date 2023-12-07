@@ -13,7 +13,7 @@ namespace FileManager.ViewModels.ExplorerViewModels
 {
     internal class TreeExplorerViewModel : ViewModelBase
     {
-        private const int MAX_WAIT_MILLISECONDS = 30_000;       // 30 seconds
+        private const int MAX_WAIT_MILLISECONDS = 5_000;       // 5 seconds
 
         private bool isLoading = true;
 
@@ -43,16 +43,24 @@ namespace FileManager.ViewModels.ExplorerViewModels
 
             FileNode intermediateRoot = new();      // it`s not good to create empty FileNode, but Avalonia diplays it correctly
 
+            int tempMaxWaitMilliseconds = MAX_WAIT_MILLISECONDS;
+
             Stopwatch stopwatch = Stopwatch.StartNew();
 
             await foreach (FileNode nodeVersion in FilesCollectionConverter.GetCurrentDirectoryNode(ExplorerViewModel.ShouldShowHidden))
             {
                 intermediateRoot = nodeVersion;
 
-                if (stopwatch.ElapsedMilliseconds > MAX_WAIT_MILLISECONDS)
+                if (stopwatch.ElapsedMilliseconds > tempMaxWaitMilliseconds)
                 {
-                    DialogBoxes.ShowWarningBox("Looks like there are lot of files");
-                    break;      // here will be question like "Continue?"
+                    bool answer = await DialogBoxes.AskQuestion("Looks like there are a lot of files. Continue or show partial result?",
+                        "Continue", "Show result");
+                    if (answer)     // yes is continue
+                    {
+                        tempMaxWaitMilliseconds *= 2;       // so that questions will be asked less and less often
+                        stopwatch.Restart();
+                    }
+                    else break;      // here will be question like "Continue?"
                 }
             }
 

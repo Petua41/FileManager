@@ -1,5 +1,4 @@
-﻿using DynamicData;
-using FileManager.Models;
+﻿using FileManager.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +16,7 @@ namespace FileManager.Services.FileListers.TreeFileListers
 
         protected List<Node<FileSystemInfo>> GetAllFileNodes(DirectoryInfo directory, Predicate<FileSystemInfo>? predicate = null)
         {
-            if (savedPredicate is null && predicate is not null) savedPredicate = predicate;
+            savedPredicate = predicate;
 
             Node<FileSystemInfo> root = CreateNodeRecursive(directory);
 
@@ -32,13 +31,14 @@ namespace FileManager.Services.FileListers.TreeFileListers
             {
                 foreach (FileSystemInfo fs in dInfo.EnumerateFileSystemInfos())
                 {
-                    if (savedPredicate is not null && !savedPredicate(fs)) continue;
-
-                    try
+                    if (savedPredicate?.Invoke(fs) ?? true)
                     {
-                        result.SubNodes.Add(CreateNodeRecursive(fs));
+                        try
+                        {
+                            result.SubNodes.Add(CreateNodeRecursive(fs));
+                        }
+                        catch (Exception e) when (e is UnauthorizedAccessException or IOException) { result.SubNodes.Add(new(fs)); }
                     }
-                    catch (Exception e) when (e is UnauthorizedAccessException or IOException) { result.SubNodes.Add(new(fs)); }
                 }
             }
 
@@ -48,22 +48,21 @@ namespace FileManager.Services.FileListers.TreeFileListers
         protected async IAsyncEnumerable<Node<FileSystemInfo>> GetRootNodeCoroutine(DirectoryInfo directory, Predicate<FileSystemInfo>? predicate = null)
         {
             Node<FileSystemInfo> root = new(directory);
-            Stack<Node<FileSystemInfo>> notReady = new();
-            notReady.Push(root);
+            Queue<Node<FileSystemInfo>> notReady = new();
+            notReady.Enqueue(root);
+
+            savedPredicate = predicate;
 
             yield return root;
 
             while (notReady.Count > 0)
             {
-                Node<FileSystemInfo> node = notReady.Pop();
-                
+                Node<FileSystemInfo> node = notReady.Dequeue();
+
                 foreach (Node<FileSystemInfo> child in await Task.Run(() => GetChildren(node.Value)))
                 {
-                    if (predicate is null || predicate(child.Value))
-                    {
-                        node.SubNodes.Add(child);
-                        notReady.Push(child);
-                    }
+                    node.SubNodes.Add(child);
+                    notReady.Enqueue(child);
                 }
 
                 yield return root;
@@ -80,7 +79,10 @@ namespace FileManager.Services.FileListers.TreeFileListers
             {
                 try
                 {
-                    foreach (FileSystemInfo fs in dInfo.EnumerateFileSystemInfos()) result.Add(new(fs));
+                    foreach (FileSystemInfo fs in dInfo.EnumerateFileSystemInfos())
+                    {
+                        if (savedPredicate?.Invoke(fs) ?? true) result.Add(new(fs));
+                    }
                 }
                 catch (Exception e) when (e is UnauthorizedAccessException or IOException) { /* don`t fill this node */ }
             }
