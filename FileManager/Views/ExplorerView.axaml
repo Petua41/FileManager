@@ -27,7 +27,7 @@
       <Grid HorizontalAlignment="Right"
             ColumnDefinitions="*,*"
             x:DataType="vm:ExplorerViewModel">
-        <ToggleButton img:Attached.Icon="fa-list-ul"
+        <ToggleButton img:Attached.Icon="fa-folder-tree"
                       Grid.Column="0"
                       IsChecked="{Binding TreeMode}" />
         <ToggleButton img:Attached.Icon="fa-grip"

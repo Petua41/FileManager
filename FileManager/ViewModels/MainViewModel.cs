@@ -83,6 +83,8 @@ public class MainViewModel : ViewModelBase
 
     public string SyncAnimation => syncStateAnimations[CurrentState];
 
+    public static bool UseCoroutine { get; set; } = false;
+
     public ReactiveCommand<Unit, Unit> CloseClicked { get; }
 
     private SyncState CurrentState

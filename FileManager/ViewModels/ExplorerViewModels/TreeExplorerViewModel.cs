@@ -60,7 +60,7 @@ namespace FileManager.ViewModels.ExplorerViewModels
                         tempMaxWaitMilliseconds *= 2;       // so that questions will be asked less and less often
                         stopwatch.Restart();
                     }
-                    else break;      // here will be question like "Continue?"
+                    else break;
                 }
             }
 
@@ -69,7 +69,9 @@ namespace FileManager.ViewModels.ExplorerViewModels
             return [intermediateRoot];
         }
 
-        public Task<ObservableCollection<FileNode>> FileNodes => GetFilesThroughCoroutine();
+        public Task<ObservableCollection<FileNode>> FileNodes => MainViewModel.UseCoroutine
+            ? GetFilesThroughCoroutine()
+            : GetFiles();
 
         public bool IsLoading
         {
