@@ -1,7 +1,9 @@
-﻿using FileManager.Models;
+﻿using DynamicData;
+using FileManager.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace FileManager.Services.FileListers.TreeFileListers
 {
@@ -11,7 +13,7 @@ namespace FileManager.Services.FileListers.TreeFileListers
 
         public abstract List<Node<FileSystemInfo>> GetFileList(DirectoryInfo currentDirectory);
 
-        public abstract IEnumerable<Node<FileSystemInfo>> GetDirectoryNode(DirectoryInfo currentDirectory);
+        public abstract IAsyncEnumerable<Node<FileSystemInfo>> GetDirectoryNode(DirectoryInfo currentDirectory);
 
         protected List<Node<FileSystemInfo>> GetAllFileNodes(DirectoryInfo directory, Predicate<FileSystemInfo>? predicate = null)
         {
@@ -43,36 +45,47 @@ namespace FileManager.Services.FileListers.TreeFileListers
             return result;
         }
 
-        protected IEnumerable<Node<FileSystemInfo>> GetRootNodeCoroutine(DirectoryInfo directory, Predicate<FileSystemInfo>? predicate = null)
+        protected async IAsyncEnumerable<Node<FileSystemInfo>> GetRootNodeCoroutine(DirectoryInfo directory, Predicate<FileSystemInfo>? predicate = null)
         {
             Node<FileSystemInfo> root = new(directory);
             Stack<Node<FileSystemInfo>> notReady = new();
             notReady.Push(root);
-
-            savedPredicate ??= predicate;
 
             yield return root;
 
             while (notReady.Count > 0)
             {
                 Node<FileSystemInfo> node = notReady.Pop();
-
-                if (node.Value is DirectoryInfo dInfo)
+                
+                foreach (Node<FileSystemInfo> child in await Task.Run(() => GetChildren(node.Value)))
                 {
-                    try
+                    if (predicate is null || predicate(child.Value))
                     {
-                        foreach (FileSystemInfo fs in dInfo.EnumerateFileSystemInfos())
-                        {
-                            if (savedPredicate is null || savedPredicate(fs)) node.SubNodes.Add(new(fs));
-                        }
+                        node.SubNodes.Add(child);
+                        notReady.Push(child);
                     }
-                    catch (Exception e) when (e is UnauthorizedAccessException or IOException) { /* don`t fill this node */ }
-
-                    yield return root;
                 }
+
+                yield return root;
             }
 
             yield break;
+        }
+
+        private List<Node<FileSystemInfo>> GetChildren(FileSystemInfo fsInfo)
+        {
+            List<Node<FileSystemInfo>> result = [];
+
+            if (fsInfo is DirectoryInfo dInfo)
+            {
+                try
+                {
+                    foreach (FileSystemInfo fs in dInfo.EnumerateFileSystemInfos()) result.Add(new(fs));
+                }
+                catch (Exception e) when (e is UnauthorizedAccessException or IOException) { /* don`t fill this node */ }
+            }
+
+            return result;
         }
     }
 }

@@ -8,6 +8,6 @@ namespace FileManager.Services.FileListers.TreeFileListers
     {
         List<Node<FileSystemInfo>> GetFileList(DirectoryInfo currentDir);
 
-        IEnumerable<Node<FileSystemInfo>> GetDirectoryNode(DirectoryInfo currentDir);
+        IAsyncEnumerable<Node<FileSystemInfo>> GetDirectoryNode(DirectoryInfo currentDir);
     }
 }

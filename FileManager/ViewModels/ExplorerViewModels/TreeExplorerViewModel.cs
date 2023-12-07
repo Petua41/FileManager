@@ -5,6 +5,7 @@ using FileManager.Services;
 using ReactiveUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace FileManager.ViewModels.ExplorerViewModels
 {
     internal class TreeExplorerViewModel : ViewModelBase
     {
-        private const int MAX_ITERATIONS_COUNT = 100;
+        private const int MAX_WAIT_MILLISECONDS = 30_000;       // 30 seconds
 
         private bool isLoading = true;
 
@@ -40,25 +41,27 @@ namespace FileManager.ViewModels.ExplorerViewModels
         {
             IsLoading = true;
 
-            int iterations = 0;
-
             FileNode intermediateRoot = new();      // it`s not good to create empty FileNode, but Avalonia diplays it correctly
 
-            foreach (FileNode nodeVersion in FilesCollectionConverter.GetCurrentDirectoryNode(ExplorerViewModel.ShouldShowHidden))
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            await foreach (FileNode nodeVersion in FilesCollectionConverter.GetCurrentDirectoryNode(ExplorerViewModel.ShouldShowHidden))
             {
                 intermediateRoot = nodeVersion;
-                iterations++;
 
-                if (iterations > MAX_ITERATIONS_COUNT)
+                if (stopwatch.ElapsedMilliseconds > MAX_WAIT_MILLISECONDS)
                 {
+                    DialogBoxes.ShowWarningBox("Looks like there are lot of files");
                     break;      // here will be question like "Continue?"
                 }
             }
-            
+
+            IsLoading = false;
+
             return [intermediateRoot];
         }
 
-        public Task<ObservableCollection<FileNode>> FileNodes => GetFiles();
+        public Task<ObservableCollection<FileNode>> FileNodes => GetFilesThroughCoroutine();
 
         public bool IsLoading
         {

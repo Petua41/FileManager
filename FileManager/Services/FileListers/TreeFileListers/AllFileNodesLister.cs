@@ -7,9 +7,9 @@ namespace FileManager.Services.FileListers.TreeFileListers
 {
     internal class AllFileNodesLister : TreeFileLister
     {
-        public override IEnumerable<Node<FileSystemInfo>> GetDirectoryNode(DirectoryInfo currentDirectory)
+        public async override IAsyncEnumerable<Node<FileSystemInfo>> GetDirectoryNode(DirectoryInfo currentDirectory)
         {
-            foreach (Node<FileSystemInfo> rootVersion in GetRootNodeCoroutine(currentDirectory)) yield return rootVersion;
+            await foreach (Node<FileSystemInfo> rootVersion in GetRootNodeCoroutine(currentDirectory)) yield return rootVersion;
         }
 
         public override List<Node<FileSystemInfo>> GetFileList(DirectoryInfo currentDirectory)

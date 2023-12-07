@@ -85,11 +85,11 @@ namespace FileManager.Infrastructure.Converters
             return set;
         }
 
-        public static IEnumerable<FileNode> GetCurrentDirectoryNode(bool showHidden)
+        public async static IAsyncEnumerable<FileNode> GetCurrentDirectoryNode(bool showHidden)
         {
             CurrentDirectory.SetFileListingStrategy(showHidden);
             
-            foreach (Node<FileSystemInfo> rootVersion in CurrentDirectory.GetNode())
+            await foreach (Node<FileSystemInfo> rootVersion in CurrentDirectory.GetNode())
             {
                 yield return ConvertNode(rootVersion);
             }

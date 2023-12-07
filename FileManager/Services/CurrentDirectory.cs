@@ -57,9 +57,9 @@ namespace FileManager.Services
 
         public static List<Node<FileSystemInfo>> GetFileNodes() => fileNodeListingStrategy.GetFileList(CurrentDir);
 
-        public static IEnumerable<Node<FileSystemInfo>> GetNode()
+        public async static IAsyncEnumerable<Node<FileSystemInfo>> GetNode()
         {
-            foreach (Node<FileSystemInfo> nodeVersion in fileNodeListingStrategy.GetFileList(CurrentDir)) yield return nodeVersion;
+            await foreach (Node<FileSystemInfo> nodeVersion in fileNodeListingStrategy.GetDirectoryNode(CurrentDir)) yield return nodeVersion;
         }
 
         public static void Go(string path)
