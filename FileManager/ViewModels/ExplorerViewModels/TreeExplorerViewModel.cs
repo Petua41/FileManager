@@ -5,6 +5,7 @@ using FileManager.Services;
 using ReactiveUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -12,6 +13,8 @@ namespace FileManager.ViewModels.ExplorerViewModels
 {
     internal class TreeExplorerViewModel : ViewModelBase
     {
+        private const int MAX_WAIT_MILLISECONDS = 5_000;       // 5 seconds
+
         private bool isLoading = true;
 
         public TreeExplorerViewModel()
@@ -31,10 +34,44 @@ namespace FileManager.ViewModels.ExplorerViewModels
 
             IsLoading = false;
 
-            return new(nodes);
+            return [.. nodes];
         }
 
-        public Task<ObservableCollection<FileNode>> FileNodes => GetFiles();
+        private async Task<ObservableCollection<FileNode>> GetFilesThroughCoroutine()
+        {
+            IsLoading = true;
+
+            FileNode intermediateRoot = new();      // it`s not good to create empty FileNode, but Avalonia diplays it correctly
+
+            int tempMaxWaitMilliseconds = MAX_WAIT_MILLISECONDS;
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            await foreach (FileNode nodeVersion in FilesCollectionConverter.GetCurrentDirectoryNode(ExplorerViewModel.ShouldShowHidden))
+            {
+                intermediateRoot = nodeVersion;
+
+                if (stopwatch.ElapsedMilliseconds > tempMaxWaitMilliseconds)
+                {
+                    bool answer = await DialogBoxes.AskQuestion("Looks like there are a lot of files. Continue or show partial result?",
+                        "Continue", "Show result");
+                    if (answer)     // yes is continue
+                    {
+                        tempMaxWaitMilliseconds *= 2;       // so that questions will be asked less and less often
+                        stopwatch.Restart();
+                    }
+                    else break;
+                }
+            }
+
+            IsLoading = false;
+
+            return [intermediateRoot];
+        }
+
+        public Task<ObservableCollection<FileNode>> FileNodes => MainViewModel.UseCoroutine
+            ? GetFilesThroughCoroutine()
+            : GetFiles();
 
         public bool IsLoading
         {

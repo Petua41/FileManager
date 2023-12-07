@@ -53,24 +53,13 @@ namespace FileManager.Services
             CurrentDirectorySwitched?.Invoke(null, new());
         }
 
-        public static Dictionary<string, FileType> GetFiles()
-        {
-            try { return fileListingStrategy.GetFileList(CurrentDir); }
-            catch (UnauthorizedAccessException)
-            {
-                DialogBoxes.ShowWarningBox("Access denied!");
-                return [];
-            }
-        }
+        public static Dictionary<string, FileType> GetFiles() => fileListingStrategy.GetFileList(CurrentDir);
 
-        public static List<Node<FileSystemInfo>> GetFileNodes()
+        public static List<Node<FileSystemInfo>> GetFileNodes() => fileNodeListingStrategy.GetFileList(CurrentDir);
+
+        public async static IAsyncEnumerable<Node<FileSystemInfo>> GetNode()
         {
-            try { return fileNodeListingStrategy.GetFileList(CurrentDir); }
-            catch (UnauthorizedAccessException)
-            {
-                DialogBoxes.ShowWarningBox("Access denied!");
-                return [];
-            }
+            await foreach (Node<FileSystemInfo> nodeVersion in fileNodeListingStrategy.GetDirectoryNode(CurrentDir)) yield return nodeVersion;
         }
 
         public static void Go(string path)

@@ -7,5 +7,7 @@ namespace FileManager.Services.FileListers.TreeFileListers
     internal interface IFileNodeLister
     {
         List<Node<FileSystemInfo>> GetFileList(DirectoryInfo currentDir);
+
+        IAsyncEnumerable<Node<FileSystemInfo>> GetDirectoryNode(DirectoryInfo currentDir);
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace FileManager.Services.FileListers.TreeFileListers
 {
@@ -11,9 +12,11 @@ namespace FileManager.Services.FileListers.TreeFileListers
 
         public abstract List<Node<FileSystemInfo>> GetFileList(DirectoryInfo currentDirectory);
 
+        public abstract IAsyncEnumerable<Node<FileSystemInfo>> GetDirectoryNode(DirectoryInfo currentDirectory);
+
         protected List<Node<FileSystemInfo>> GetAllFileNodes(DirectoryInfo directory, Predicate<FileSystemInfo>? predicate = null)
         {
-            if (savedPredicate is null && predicate is not null) savedPredicate = predicate;
+            savedPredicate = predicate;
 
             Node<FileSystemInfo> root = CreateNodeRecursive(directory);
 
@@ -28,41 +31,63 @@ namespace FileManager.Services.FileListers.TreeFileListers
             {
                 foreach (FileSystemInfo fs in dInfo.EnumerateFileSystemInfos())
                 {
-                    if (savedPredicate is not null && !savedPredicate(fs)) continue;
-
-                    try
+                    if (savedPredicate?.Invoke(fs) ?? true)
                     {
-                        result.SubNodes.Add(CreateNodeRecursive(fs));
+                        try
+                        {
+                            result.SubNodes.Add(CreateNodeRecursive(fs));
+                        }
+                        catch (Exception e) when (e is UnauthorizedAccessException or IOException) { result.SubNodes.Add(new(fs)); }
                     }
-                    catch (Exception e) when (e is UnauthorizedAccessException or IOException) { result.SubNodes.Add(new(fs)); }
                 }
             }
 
             return result;
         }
 
-        /*private Node<FileSystemInfo> CreateNodeGCD(FileSystemInfo fsInfo)
+        protected async IAsyncEnumerable<Node<FileSystemInfo>> GetRootNodeCoroutine(DirectoryInfo directory, Predicate<FileSystemInfo>? predicate = null)
         {
-            if (fsInfo is FileInfo fInfo) return new(fsInfo);
+            Node<FileSystemInfo> root = new(directory);
+            Queue<Node<FileSystemInfo>> notReady = new();
+            notReady.Enqueue(root);
 
-            Stack<FileSystemInfo> stack = [];
-            stack.Push(fsInfo);
+            savedPredicate = predicate;
 
-            while (stack.Count > 0)
+            yield return root;
+
+            while (notReady.Count > 0)
             {
-                FileSystemInfo fs = stack.Pop();
-                // Visit(fs)
+                Node<FileSystemInfo> node = notReady.Dequeue();
 
-
-
-                if (fs is DirectoryInfo dInfo)
+                foreach (Node<FileSystemInfo> child in await Task.Run(() => GetChildren(node.Value)))
                 {
-                    foreach (FileSystemInfo fileSystem in dInfo.EnumerateFileSystemInfos().Reverse())
+                    node.SubNodes.Add(child);
+                    notReady.Enqueue(child);
+                }
+
+                yield return root;
+            }
+
+            yield break;
+        }
+
+        private List<Node<FileSystemInfo>> GetChildren(FileSystemInfo fsInfo)
+        {
+            List<Node<FileSystemInfo>> result = [];
+
+            if (fsInfo is DirectoryInfo dInfo)
+            {
+                try
+                {
+                    foreach (FileSystemInfo fs in dInfo.EnumerateFileSystemInfos())
                     {
-                        stack.Push(fileSystem);
+                        if (savedPredicate?.Invoke(fs) ?? true) result.Add(new(fs));
                     }
                 }
+                catch (Exception e) when (e is UnauthorizedAccessException or IOException) { /* don`t fill this node */ }
             }
-        }*/
+
+            return result;
+        }
     }
 }

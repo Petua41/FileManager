@@ -37,6 +37,33 @@
           </MenuItem.Icon>
         </MenuItem>
       </MenuItem>
+      <MenuItem Header="Options" >
+        <MenuItem Header="Build file tree dynamically" >
+          <ToolTip.Tip>
+            <StackPanel >
+              <Label Content="Defines how Tree view in Exlorer tab is built" />
+              <DockPanel >
+                <Label Content="no:"
+                       FontWeight="Bold"
+                       DockPanel.Dock="Left" />
+                <Label Content="The whole tree is built at once. It's faster, but anyway can take much time"
+                       DockPanel.Dock="Right" />
+              </DockPanel>
+              <DockPanel >
+                <Label Content="yes:"
+                       FontWeight="Bold"
+                       DockPanel.Dock="Left" />
+                <Label Content="Tree is built step-by-step. It's slower, but you can see a part of tree, if process takes to much time"
+                       DockPanel.Dock="Right" />
+              </DockPanel>
+            </StackPanel>
+          </ToolTip.Tip>
+          <MenuItem.Icon >
+            <CheckBox x:DataType="vm:MainViewModel"
+                      IsChecked="{Binding UseCoroutine}" />
+          </MenuItem.Icon>
+        </MenuItem>
+      </MenuItem>
     </Menu>
     <Panel DockPanel.Dock="Bottom" >
       <Grid HorizontalAlignment="Left"
