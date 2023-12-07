@@ -85,6 +85,16 @@ namespace FileManager.Infrastructure.Converters
             return set;
         }
 
+        public static IEnumerable<FileNode> GetCurrentDirectoryNode(bool showHidden)
+        {
+            CurrentDirectory.SetFileListingStrategy(showHidden);
+            
+            foreach (Node<FileSystemInfo> rootVersion in CurrentDirectory.GetNode())
+            {
+                yield return ConvertNode(rootVersion);
+            }
+        }
+
         private static FileNode ConvertNode(Node<FileSystemInfo> node)
         {
             ObservableCollection<FileNode> subnodes = [];

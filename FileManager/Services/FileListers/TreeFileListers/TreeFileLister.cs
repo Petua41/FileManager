@@ -11,6 +11,8 @@ namespace FileManager.Services.FileListers.TreeFileListers
 
         public abstract List<Node<FileSystemInfo>> GetFileList(DirectoryInfo currentDirectory);
 
+        public abstract IEnumerable<Node<FileSystemInfo>> GetDirectoryNode(DirectoryInfo currentDirectory);
+
         protected List<Node<FileSystemInfo>> GetAllFileNodes(DirectoryInfo directory, Predicate<FileSystemInfo>? predicate = null)
         {
             if (savedPredicate is null && predicate is not null) savedPredicate = predicate;
@@ -41,28 +43,36 @@ namespace FileManager.Services.FileListers.TreeFileListers
             return result;
         }
 
-        /*private Node<FileSystemInfo> CreateNodeGCD(FileSystemInfo fsInfo)
+        protected IEnumerable<Node<FileSystemInfo>> GetRootNodeCoroutine(DirectoryInfo directory, Predicate<FileSystemInfo>? predicate = null)
         {
-            if (fsInfo is FileInfo fInfo) return new(fsInfo);
+            Node<FileSystemInfo> root = new(directory);
+            Stack<Node<FileSystemInfo>> notReady = new();
+            notReady.Push(root);
 
-            Stack<FileSystemInfo> stack = [];
-            stack.Push(fsInfo);
+            savedPredicate ??= predicate;
 
-            while (stack.Count > 0)
+            yield return root;
+
+            while (notReady.Count > 0)
             {
-                FileSystemInfo fs = stack.Pop();
-                // Visit(fs)
+                Node<FileSystemInfo> node = notReady.Pop();
 
-
-
-                if (fs is DirectoryInfo dInfo)
+                if (node.Value is DirectoryInfo dInfo)
                 {
-                    foreach (FileSystemInfo fileSystem in dInfo.EnumerateFileSystemInfos().Reverse())
+                    try
                     {
-                        stack.Push(fileSystem);
+                        foreach (FileSystemInfo fs in dInfo.EnumerateFileSystemInfos())
+                        {
+                            if (savedPredicate is null || savedPredicate(fs)) node.SubNodes.Add(new(fs));
+                        }
                     }
+                    catch (Exception e) when (e is UnauthorizedAccessException or IOException) { /* don`t fill this node */ }
+
+                    yield return root;
                 }
             }
-        }*/
+
+            yield break;
+        }
     }
 }

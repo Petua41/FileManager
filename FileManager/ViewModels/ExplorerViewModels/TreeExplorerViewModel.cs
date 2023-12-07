@@ -12,6 +12,8 @@ namespace FileManager.ViewModels.ExplorerViewModels
 {
     internal class TreeExplorerViewModel : ViewModelBase
     {
+        private const int MAX_ITERATIONS_COUNT = 100;
+
         private bool isLoading = true;
 
         public TreeExplorerViewModel()
@@ -31,7 +33,29 @@ namespace FileManager.ViewModels.ExplorerViewModels
 
             IsLoading = false;
 
-            return new(nodes);
+            return [.. nodes];
+        }
+
+        private async Task<ObservableCollection<FileNode>> GetFilesThroughCoroutine()
+        {
+            IsLoading = true;
+
+            int iterations = 0;
+
+            FileNode intermediateRoot = new();      // it`s not good to create empty FileNode, but Avalonia diplays it correctly
+
+            foreach (FileNode nodeVersion in FilesCollectionConverter.GetCurrentDirectoryNode(ExplorerViewModel.ShouldShowHidden))
+            {
+                intermediateRoot = nodeVersion;
+                iterations++;
+
+                if (iterations > MAX_ITERATIONS_COUNT)
+                {
+                    break;      // here will be question like "Continue?"
+                }
+            }
+            
+            return [intermediateRoot];
         }
 
         public Task<ObservableCollection<FileNode>> FileNodes => GetFiles();
